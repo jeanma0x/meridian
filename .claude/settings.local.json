@@ -4,7 +4,21 @@
       "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir=false --no-turbopack --yes)",
       "Bash(ls \"/Users/jeanportillo/Documents/Personal Projects/\")",
       "Read(//Users/jeanportillo/Documents/Personal Projects/**)",
-      "Bash(npx create-next-app@latest meridian --typescript --tailwind --eslint --app --src-dir=false --no-turbopack --yes)"
+      "Bash(npx create-next-app@latest meridian --typescript --tailwind --eslint --app --src-dir=false --no-turbopack --yes)",
+      "Bash(mv \"/tmp/PRD_meridian_backup.md\" \"/Users/jeanportillo/Documents/Personal Projects/Meridian/PRD.md\" && ls \"/Users/jeanportillo/Documents/Personal Projects/Meridian\")",
+      "Bash(npm install *)",
+      "Bash(npx shadcn@latest init --defaults)",
+      "Bash(npx shadcn@latest add input select textarea badge card dialog dropdown-menu separator sheet skeleton toast --yes)",
+      "Bash(npx shadcn@latest add input select textarea badge card dialog dropdown-menu separator sheet skeleton sonner --yes)",
+      "Bash(npx prisma *)",
+      "Bash(python3 -c \"import sys,json; p=json.load\\(sys.stdin\\); print\\('Next.js:', p['dependencies'].get\\('next','?'\\)\\); print\\('Prisma:', p['dependencies'].get\\('prisma','?'\\) or p.get\\('devDependencies',{}\\).get\\('prisma','?'\\)\\); print\\('Clerk:', p['dependencies'].get\\('@clerk/nextjs','?'\\)\\); print\\('Groq:', p['dependencies'].get\\('groq-sdk','?'\\)\\); print\\('Resend:', p['dependencies'].get\\('resend','?'\\)\\)\")",
+      "Bash(mkdir -p \"/Users/jeanportillo/Documents/Personal Projects/Meridian/app/\\(auth\\)/sign-in/[[...sign-in]]\")",
+      "Bash(mkdir -p \"/Users/jeanportillo/Documents/Personal Projects/Meridian/app/\\(auth\\)/sign-up/[[...sign-up]]\")",
+      "Bash(npx tsc *)",
+      "Bash(node -e \"const { PrismaNeon } = require\\('@prisma/adapter-neon'\\); console.log\\(typeof PrismaNeon\\);\")"
+    ],
+    "additionalDirectories": [
+      "/private/tmp"
     ]
   }
 }
