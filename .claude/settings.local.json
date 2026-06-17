@@ -15,7 +15,11 @@
       "Bash(mkdir -p \"/Users/jeanportillo/Documents/Personal Projects/Meridian/app/\\(auth\\)/sign-in/[[...sign-in]]\")",
       "Bash(mkdir -p \"/Users/jeanportillo/Documents/Personal Projects/Meridian/app/\\(auth\\)/sign-up/[[...sign-up]]\")",
       "Bash(npx tsc *)",
-      "Bash(node -e \"const { PrismaNeon } = require\\('@prisma/adapter-neon'\\); console.log\\(typeof PrismaNeon\\);\")"
+      "Bash(node -e \"const { PrismaNeon } = require\\('@prisma/adapter-neon'\\); console.log\\(typeof PrismaNeon\\);\")",
+      "Bash(git add *)",
+      "Bash(git rm *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)"
     ],
     "additionalDirectories": [
       "/private/tmp"
