@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir=false --no-turbopack --yes)",
+      "Bash(ls \"/Users/jeanportillo/Documents/Personal Projects/\")",
+      "Read(//Users/jeanportillo/Documents/Personal Projects/**)",
+      "Bash(npx create-next-app@latest meridian --typescript --tailwind --eslint --app --src-dir=false --no-turbopack --yes)"
+    ]
+  }
+}
