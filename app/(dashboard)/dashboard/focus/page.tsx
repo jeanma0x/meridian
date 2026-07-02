@@ -17,12 +17,13 @@ import { OrgBadge } from '@/components/shared/org-badge'
 import { formatDate } from '@/lib/utils'
 import type { FocusItem } from '@/types'
 
-const DAY_NAMES = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado']
-const MONTH_NAMES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
-
 function todayLabel() {
-  const d = new Date()
-  return `${DAY_NAMES[d.getDay()]} ${d.getDate()} de ${MONTH_NAMES[d.getMonth()]}`
+  const fecha = new Date().toLocaleDateString('es-ES', {
+    weekday: 'long',
+    day:     'numeric',
+    month:   'long',
+  })
+  return fecha.charAt(0).toUpperCase() + fecha.slice(1)
 }
 
 function FocusSkeleton() {
@@ -138,7 +139,7 @@ export default function FocusPage() {
       <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-lg font-semibold">Focus de hoy</h1>
-          <p className="text-sm text-muted-foreground capitalize">{todayLabel()}</p>
+          <p className="text-sm text-muted-foreground">{todayLabel()}</p>
         </div>
         <Button
           variant="outline"
