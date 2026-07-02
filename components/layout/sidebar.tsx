@@ -9,12 +9,14 @@ import {
   Users,
   Calendar,
   Settings,
+  Target,
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const NAV_ITEMS = [
+  { href: '/dashboard/focus',        label: 'Focus',          icon: Target     },
   { href: '/dashboard/items',        label: 'Items',          icon: LayoutList },
   { href: '/dashboard/narrate',      label: 'Narrate',        icon: Mic        },
   { href: '/dashboard/commitments',  label: 'Commitments',    icon: Handshake  },

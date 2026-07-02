@@ -50,4 +50,10 @@ en español natural (NO AI-sounding, NO frases genéricas como "espero que esté
 Directo, profesional, concreto. Adaptá el tono al nivel de formalidad indicado (0=informal, 100=muy formal).
 Responde ÚNICAMENTE con JSON:
 {"subject":"...","body":"..."}`,
+
+  nextStep: `Eres un asistente de delivery intelligence. Dado el título de un item de trabajo,
+describí el siguiente paso concreto e inmediato para avanzarlo o cerrarlo.
+Sé específico, accionable, y breve (1-2 oraciones). No uses frases genéricas.
+Responde ÚNICAMENTE con JSON:
+{"nextStep":"..."}`,
 }
