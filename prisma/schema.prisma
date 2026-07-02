@@ -156,8 +156,9 @@ model Stakeholder {
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 
-  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  organization Organization       @relation(fields: [orgId], references: [id], onDelete: Cascade)
   commitments  Commitment[]
+  meetings     MeetingStakeholder[]
 
   @@index([orgId])
   @@map("stakeholders")
@@ -197,8 +198,9 @@ model Meeting {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  organization Organization  @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  organization Organization       @relation(fields: [orgId], references: [id], onDelete: Cascade)
   items        MeetingItem[]
+  stakeholders MeetingStakeholder[]
 
   @@index([orgId])
   @@index([scheduledAt])
@@ -214,6 +216,17 @@ model MeetingItem {
 
   @@id([meetingId, itemId])
   @@map("meeting_items")
+}
+
+model MeetingStakeholder {
+  meetingId     String
+  stakeholderId String
+
+  meeting     Meeting     @relation(fields: [meetingId],     references: [id], onDelete: Cascade)
+  stakeholder Stakeholder @relation(fields: [stakeholderId], references: [id], onDelete: Cascade)
+
+  @@id([meetingId, stakeholderId])
+  @@map("meeting_stakeholders")
 }
 
 model Notification {

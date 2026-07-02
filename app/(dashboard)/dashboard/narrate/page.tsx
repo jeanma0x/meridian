@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { Sparkles, RotateCcw, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -56,8 +57,10 @@ type SheetMode =
   | { type: 'item'; defaultTitle: string }
   | null
 
-export default function NarratePage() {
-  const [text,    setText]    = useState(EXAMPLE_TEXT)
+function NarrateContent() {
+  const searchParams = useSearchParams()
+  const prefill      = searchParams.get('prefill')
+  const [text,    setText]    = useState(prefill ? decodeURIComponent(prefill) : EXAMPLE_TEXT)
   const [loading, setLoading] = useState(false)
   const [error,   setError]   = useState<string | null>(null)
   const [result,  setResult]  = useState<NarrateResult | null>(null)
@@ -266,6 +269,14 @@ export default function NarratePage() {
         </SheetContent>
       </Sheet>
     </div>
+  )
+}
+
+export default function NarratePage() {
+  return (
+    <Suspense>
+      <NarrateContent />
+    </Suspense>
   )
 }
 
