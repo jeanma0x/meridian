@@ -1,7 +1,8 @@
 'use client'
 
 import { Suspense, useEffect, useRef, useState } from 'react'
-import { Bell, AlertTriangle, Clock, TrendingUp, AlertCircle, Check, CheckCheck } from 'lucide-react'
+import { Bell, AlertTriangle, Clock, TrendingUp, AlertCircle, Check, CheckCheck, Sun, Moon } from 'lucide-react'
+import { useTheme } from 'next-themes'
 import { Button } from '@/components/ui/button'
 import { OrgFilter } from './org-filter'
 import type { NotificationType } from '@/lib/generated/prisma/client'
@@ -140,6 +141,27 @@ function NotificationBell() {
   )
 }
 
+function ThemeToggle() {
+  const { resolvedTheme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => setMounted(true), [])
+
+  if (!mounted) return <div className="w-8 h-8" />
+
+  return (
+    <button
+      onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+      className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
+      title={resolvedTheme === 'dark' ? 'Cambiar a claro' : 'Cambiar a oscuro'}
+    >
+      {resolvedTheme === 'dark'
+        ? <Sun  className="w-4 h-4" />
+        : <Moon className="w-4 h-4" />}
+    </button>
+  )
+}
+
 export function TopBar() {
   return (
     <header className="h-12 flex items-center gap-4 px-4 border-b border-border bg-card shrink-0">
@@ -157,6 +179,7 @@ export function TopBar() {
 
       {/* Right side */}
       <div className="flex items-center gap-1 shrink-0">
+        <ThemeToggle />
         <NotificationBell />
       </div>
     </header>

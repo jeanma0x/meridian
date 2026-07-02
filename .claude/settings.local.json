@@ -21,10 +21,27 @@
       "Bash(git commit -m ' *)",
       "Bash(git push *)",
       "Bash(mkdir -p \"/Users/jeanportillo/Documents/Personal Projects/Meridian/app/api/organizations/[id]\")",
-      "Bash(mkdir -p \"/Users/jeanportillo/Documents/Personal Projects/Meridian/app/api/items/[id]\")"
+      "Bash(mkdir -p \"/Users/jeanportillo/Documents/Personal Projects/Meridian/app/api/items/[id]\")",
+      "Bash(mkdir -p \"/Users/jeanportillo/Documents/Personal Projects/Meridian/app/api/stakeholders/[id]\")",
+      "Bash(mkdir -p \"/Users/jeanportillo/Documents/Personal Projects/Meridian/app/api/commitments/[id]\")",
+      "Bash(npm run *)",
+      "Bash(echo \"PID: $!\")",
+      "Bash(curl -s -X POST http://localhost:3000/api/narrate -H 'Content-Type: application/json' -d '{\"text\":\"Reunión de prueba. Jean se comprometió a enviar el spec el viernes. Riesgo: integración con sistema legado.\"}')",
+      "Bash(ps -p 88062 -o command=)",
+      "Bash(kill 88062)",
+      "Bash(curl -s -X POST http://localhost:3000/api/narrate -H 'Content-Type: application/json' -d '{\"text\":\"Jean se comprometió a enviar el spec el viernes.\"}')",
+      "Bash(node -e \"const Groq = require\\('/Users/jeanportillo/Documents/Personal Projects/Meridian/node_modules/groq-sdk'\\); console.log\\('SDK OK:', typeof Groq\\)\")",
+      "Bash(mkdir -p \"/Users/jeanportillo/Documents/Personal Projects/Meridian/app/api/notifications/[id]\")",
+      "Bash(node -e ' *)",
+      "Bash(npx tsx *)",
+      "Bash(openssl rand *)",
+      "Bash(echo \"CRON_SECRET=meridian-cron-$\\(openssl rand -hex 12\\)\")"
     ],
     "additionalDirectories": [
-      "/private/tmp"
+      "/private/tmp",
+      "/Users/jeanportillo/Documents/Personal Projects/Meridian/app/api/stakeholders",
+      "/Users/jeanportillo/Documents/Personal Projects/Meridian/app/api/commitments",
+      "/Users/jeanportillo/Documents/Personal Projects/Meridian/app/api/notifications"
     ]
   }
 }
