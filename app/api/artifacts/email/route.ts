@@ -18,6 +18,15 @@ export async function POST(req: Request) {
     })
     if (!stakeholder) return Response.json({ error: 'Stakeholder not found' }, { status: 404 })
 
+    const [item, commitment] = await Promise.all([
+      itemId
+        ? db.item.findFirst({ where: { id: itemId, organization: { userId: user.id } } })
+        : null,
+      commitmentId
+        ? db.commitment.findFirst({ where: { id: commitmentId, stakeholder: { organization: { userId: user.id } } } })
+        : null,
+    ])
+
     const lang      = stakeholder.language === 'en' ? 'English' : 'español'
     const roleNote  = stakeholder.role ? `, ${stakeholder.role}` : ''
 
@@ -26,8 +35,8 @@ export async function POST(req: Request) {
       `Destinatario: ${stakeholder.name}${roleNote}`,
       `Nivel de formalidad: ${stakeholder.formalityLevel}/100`,
       `Contexto del correo: ${context.trim()}`,
-      itemId       ? `Item relacionado: ${itemId}`       : '',
-      commitmentId ? `Commitment: ${commitmentId}`       : '',
+      item       ? `Item relacionado: "${item.title}"` : '',
+      commitment ? `Commitment: "${commitment.title}"` : '',
     ].filter(Boolean).join('\n')
 
     const raw    = await callAI(PROMPTS.draftEmail, userContent)
