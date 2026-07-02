@@ -158,7 +158,10 @@ export function ItemForm({ item, defaultOrgId, onSuccess, onCancel }: ItemFormPr
         {/* Priority selector */}
         <Select value={priority} onValueChange={v => v && setPriority(v as typeof priority)}>
           <SelectTrigger>
-            <SelectValue placeholder="Prioridad" />
+            <SelectValue placeholder="Prioridad">
+              {PRIORITY_OPTIONS.find(o => o.value === priority)?.label
+                ?? <span className="text-muted-foreground">Prioridad</span>}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             {PRIORITY_OPTIONS.map(o => (
@@ -174,7 +177,10 @@ export function ItemForm({ item, defaultOrgId, onSuccess, onCancel }: ItemFormPr
       <div className="grid grid-cols-2 gap-3">
         <Select value={status} onValueChange={v => v && setStatus(v as typeof status)}>
           <SelectTrigger>
-            <SelectValue placeholder="Estado" />
+            <SelectValue placeholder="Estado">
+              {STATUS_OPTIONS.find(o => o.value === status)?.label
+                ?? <span className="text-muted-foreground">Estado</span>}
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             {STATUS_OPTIONS.map(o => (
