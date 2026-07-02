@@ -35,13 +35,15 @@
       "Bash(node -e ' *)",
       "Bash(npx tsx *)",
       "Bash(openssl rand *)",
-      "Bash(echo \"CRON_SECRET=meridian-cron-$\\(openssl rand -hex 12\\)\")"
+      "Bash(echo \"CRON_SECRET=meridian-cron-$\\(openssl rand -hex 12\\)\")",
+      "Bash(mkdir -p \"/Users/jeanportillo/Documents/Personal Projects/Meridian/app/\\(dashboard\\)/dashboard/items/[id]\")"
     ],
     "additionalDirectories": [
       "/private/tmp",
       "/Users/jeanportillo/Documents/Personal Projects/Meridian/app/api/stakeholders",
       "/Users/jeanportillo/Documents/Personal Projects/Meridian/app/api/commitments",
-      "/Users/jeanportillo/Documents/Personal Projects/Meridian/app/api/notifications"
+      "/Users/jeanportillo/Documents/Personal Projects/Meridian/app/api/notifications",
+      "/Users/jeanportillo/Documents/Personal Projects/Meridian/app/(dashboard)/dashboard/items"
     ]
   }
 }

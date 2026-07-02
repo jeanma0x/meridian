@@ -10,12 +10,14 @@ export async function GET(req: Request) {
   const stakeholderId = searchParams.get('stakeholderId') ?? undefined
   const status        = searchParams.get('status')        ?? undefined
   const direction     = searchParams.get('direction')     ?? undefined
+  const itemId        = searchParams.get('itemId')        ?? undefined
 
   const commitments = await db.commitment.findMany({
     where: {
       stakeholder: { organization: { userId: user.id } },
       ...(orgId         && { stakeholder: { orgId } }),
       ...(stakeholderId && { stakeholderId }),
+      ...(itemId        && { itemId }),
       ...(status        && Object.values(CommitmentStatus).includes(status as CommitmentStatus) && { status: status as CommitmentStatus }),
       ...(direction     && { direction }),
     },
