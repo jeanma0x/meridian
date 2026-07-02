@@ -2,6 +2,18 @@ import { requireUser } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { Priority, ItemStatus } from '@/lib/generated/prisma/client'
 
+async function replaceTags(itemId: string, tagNames: string[]) {
+  await db.itemTag.deleteMany({ where: { itemId } })
+  for (const name of tagNames) {
+    let tag = await db.tag.findFirst({ where: { name } })
+    if (!tag) tag = await db.tag.create({ data: { name } })
+    await db.itemTag.createMany({
+      data: [{ itemId, tagId: tag.id }],
+      skipDuplicates: true,
+    })
+  }
+}
+
 type Params = { params: Promise<{ id: string }> }
 
 const ITEM_INCLUDE = {
@@ -62,17 +74,19 @@ export async function PATCH(req: Request, { params }: Params) {
       ...(externalId     !== undefined && { externalId }),
       ...(externalSystem !== undefined && { externalSystem }),
       lastActivityAt: new Date(),
-      ...(tags !== undefined && {
-        tags: {
-          deleteMany: {},
-          create: tags.map((name: string) => ({
-            tag: { connectOrCreate: { where: { name }, create: { name } } },
-          })),
-        },
-      }),
     },
     include: ITEM_INCLUDE,
   })
+
+  if (tags !== undefined) {
+    const tagNames: string[] = Array.isArray(tags) ? tags.filter(Boolean) : []
+    await replaceTags(id, tagNames)
+    const withTags = await db.item.findUnique({
+      where: { id },
+      include: ITEM_INCLUDE,
+    })
+    return Response.json(withTags)
+  }
 
   return Response.json(updated)
 }

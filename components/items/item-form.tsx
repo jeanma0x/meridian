@@ -15,6 +15,21 @@ import type { ItemWithOrg } from '@/types'
 
 type Org = { id: string; name: string; color: string; slug: string }
 
+const PRIORITY_OPTIONS = [
+  { value: 'URGENT', label: 'Urgente' },
+  { value: 'HIGH',   label: 'Alto'    },
+  { value: 'MEDIUM', label: 'Medio'   },
+  { value: 'LOW',    label: 'Bajo'    },
+]
+
+const STATUS_OPTIONS = [
+  { value: 'TODO',        label: 'Por hacer'  },
+  { value: 'IN_PROGRESS', label: 'En curso'   },
+  { value: 'PENDING',     label: 'Pendiente'  },
+  { value: 'BLOCKED',     label: 'Bloqueado'  },
+  { value: 'DONE',        label: 'Listo'      },
+]
+
 interface ItemFormProps {
   item?: ItemWithOrg
   defaultOrgId?: string
@@ -58,12 +73,12 @@ export function ItemForm({ item, defaultOrgId, onSuccess, onCancel }: ItemFormPr
     setError(null)
 
     const payload = {
-      title:    title.trim(),
+      title:       title.trim(),
       description: description.trim() || null,
       orgId,
       priority,
       status,
-      dueDate:  dueDate || null,
+      dueDate: dueDate || null,
       tags: tags.split(',').map(t => t.trim()).filter(Boolean),
     }
 
@@ -79,8 +94,9 @@ export function ItemForm({ item, defaultOrgId, onSuccess, onCancel }: ItemFormPr
     setLoading(false)
 
     if (!res.ok) {
-      const data = await res.json()
-      setError(data.error ?? 'Ocurrió un error')
+      const data = await res.json().catch(() => ({}))
+      console.error('[ItemForm] save error:', res.status, data)
+      setError(data.error ?? `Error ${res.status}`)
       return
     }
 
@@ -88,17 +104,17 @@ export function ItemForm({ item, defaultOrgId, onSuccess, onCancel }: ItemFormPr
     onSuccess?.(saved)
   }
 
+  const selectedOrg = orgs.find(o => o.id === orgId)
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {/* Title */}
-      <div>
-        <Input
-          placeholder="Título del item *"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-          autoFocus
-        />
-      </div>
+      <Input
+        placeholder="Título del item *"
+        value={title}
+        onChange={e => setTitle(e.target.value)}
+        autoFocus
+      />
 
       {/* Description */}
       <Textarea
@@ -109,17 +125,29 @@ export function ItemForm({ item, defaultOrgId, onSuccess, onCancel }: ItemFormPr
         className="resize-none"
       />
 
-      {/* Org + Priority row */}
+      {/* Org + Priority */}
       <div className="grid grid-cols-2 gap-3">
-        <Select value={orgId} onValueChange={v => v && setOrgId(v)}>
+        {/* Org selector — label derived from resolved org name */}
+        <Select
+          value={orgId}
+          onValueChange={v => v && setOrgId(v)}
+        >
           <SelectTrigger>
-            <SelectValue placeholder="Organización" />
+            <SelectValue placeholder="Organización">
+              {selectedOrg
+                ? <span className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: selectedOrg.color }} />
+                    {selectedOrg.name}
+                  </span>
+                : <span className="text-muted-foreground">Organización</span>
+              }
+            </SelectValue>
           </SelectTrigger>
           <SelectContent>
             {orgs.map(org => (
-              <SelectItem key={org.id} value={org.id}>
+              <SelectItem key={org.id} value={org.id} label={org.name}>
                 <span className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full" style={{ backgroundColor: org.color }} />
+                  <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: org.color }} />
                   {org.name}
                 </span>
               </SelectItem>
@@ -127,31 +155,33 @@ export function ItemForm({ item, defaultOrgId, onSuccess, onCancel }: ItemFormPr
           </SelectContent>
         </Select>
 
+        {/* Priority selector */}
         <Select value={priority} onValueChange={v => v && setPriority(v as typeof priority)}>
           <SelectTrigger>
             <SelectValue placeholder="Prioridad" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="URGENT">Urgente</SelectItem>
-            <SelectItem value="HIGH">Alto</SelectItem>
-            <SelectItem value="MEDIUM">Medio</SelectItem>
-            <SelectItem value="LOW">Bajo</SelectItem>
+            {PRIORITY_OPTIONS.map(o => (
+              <SelectItem key={o.value} value={o.value} label={o.label}>
+                {o.label}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>
 
-      {/* Status + Due date row */}
+      {/* Status + Due date */}
       <div className="grid grid-cols-2 gap-3">
         <Select value={status} onValueChange={v => v && setStatus(v as typeof status)}>
           <SelectTrigger>
-            <SelectValue placeholder="Status" />
+            <SelectValue placeholder="Estado" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="TODO">Por hacer</SelectItem>
-            <SelectItem value="IN_PROGRESS">En curso</SelectItem>
-            <SelectItem value="PENDING">Pendiente</SelectItem>
-            <SelectItem value="BLOCKED">Bloqueado</SelectItem>
-            <SelectItem value="DONE">Listo</SelectItem>
+            {STATUS_OPTIONS.map(o => (
+              <SelectItem key={o.value} value={o.value} label={o.label}>
+                {o.label}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
 
@@ -172,7 +202,6 @@ export function ItemForm({ item, defaultOrgId, onSuccess, onCancel }: ItemFormPr
 
       {error && <p className="text-sm text-destructive">{error}</p>}
 
-      {/* Actions */}
       <div className="flex justify-end gap-2 pt-1">
         {onCancel && (
           <Button type="button" variant="ghost" onClick={onCancel} disabled={loading}>
