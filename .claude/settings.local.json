@@ -19,7 +19,9 @@
       "Bash(git add *)",
       "Bash(git rm *)",
       "Bash(git commit -m ' *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(mkdir -p \"/Users/jeanportillo/Documents/Personal Projects/Meridian/app/api/organizations/[id]\")",
+      "Bash(mkdir -p \"/Users/jeanportillo/Documents/Personal Projects/Meridian/app/api/items/[id]\")"
     ],
     "additionalDirectories": [
       "/private/tmp"
