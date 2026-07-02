@@ -17,6 +17,10 @@ export type CommitmentWithStakeholder = Commitment & {
   item: Item | null
 }
 
+export type StakeholderWithOrg = Stakeholder & {
+  organization: Organization
+}
+
 export type OrgWithCounts = Organization & {
   _count: {
     items: number
