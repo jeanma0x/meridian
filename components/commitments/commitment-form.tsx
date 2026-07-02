@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -44,8 +45,9 @@ interface CommitmentFormProps {
 export function CommitmentForm({ commitment, defaults, onSuccess, onCancel }: CommitmentFormProps) {
   const [stakeholders, setStakeholders] = useState<Stakeholder[]>([])
   const [items,        setItems]        = useState<Item[]>([])
-  const [loading,      setLoading]      = useState(false)
-  const [error,        setError]        = useState<string | null>(null)
+  const [loading,         setLoading]         = useState(false)
+  const [error,           setError]           = useState<string | null>(null)
+  const [genDescription,  setGenDescription]  = useState(false)
 
   const [title,           setTitle]           = useState(commitment?.title           ?? defaults?.title     ?? '')
   const [description,     setDescription]     = useState(commitment?.description     ?? '')
@@ -124,13 +126,40 @@ export function CommitmentForm({ commitment, defaults, onSuccess, onCancel }: Co
       />
 
       {/* Description */}
-      <Textarea
-        placeholder="Descripción (opcional)"
-        value={description}
-        onChange={e => setDescription(e.target.value)}
-        rows={2}
-        className="resize-none"
-      />
+      <div className="relative">
+        <Textarea
+          placeholder="Descripción (opcional)"
+          value={description}
+          onChange={e => setDescription(e.target.value)}
+          rows={2}
+          className="resize-none pr-10"
+        />
+        <button
+          type="button"
+          title="Generar descripción con IA"
+          disabled={genDescription || !title.trim()}
+          onClick={async () => {
+            if (!title.trim()) return
+            setGenDescription(true)
+            try {
+              const res  = await fetch('/api/artifacts/description', {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify({ title }),
+              })
+              if (res.ok) {
+                const data = await res.json()
+                setDescription(data.description ?? '')
+              }
+            } finally {
+              setGenDescription(false)
+            }
+          }}
+          className="absolute top-2 right-2 p-1 rounded text-muted-foreground hover:text-primary disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+        >
+          <Sparkles className={`w-3.5 h-3.5 ${genDescription ? 'animate-pulse' : ''}`} />
+        </button>
+      </div>
 
       {/* Stakeholder + Direction */}
       <div className="grid grid-cols-2 gap-3">

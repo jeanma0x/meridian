@@ -56,4 +56,10 @@ describí el siguiente paso concreto e inmediato para avanzarlo o cerrarlo.
 Sé específico, accionable, y breve (1-2 oraciones). No uses frases genéricas.
 Responde ÚNICAMENTE con JSON:
 {"nextStep":"..."}`,
+
+  generateDescription: `Dado el título de un commitment o tarea de trabajo, generá una descripción
+breve y concreta (2-3 oraciones máximo). Explicá qué implica cumplirlo, quién o qué está involucrado,
+y cuál es el resultado esperado. Sin frases genéricas, sin AI-speak.
+Responde ÚNICAMENTE con JSON:
+{"description":"..."}`,
 }

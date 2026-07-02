@@ -26,7 +26,7 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   const user = await requireUser()
   const body = await req.json()
-  const { title, orgId, scheduledAt, notes, stakeholderIds } = body
+  const { title, orgId, scheduledAt, notes, meetingUrl, stakeholderIds } = body
 
   if (!title?.trim()) return Response.json({ error: 'title is required' }, { status: 400 })
   if (!orgId)         return Response.json({ error: 'orgId is required' },  { status: 400 })
@@ -39,7 +39,8 @@ export async function POST(req: Request) {
       title:       title.trim(),
       orgId,
       scheduledAt: scheduledAt ? new Date(scheduledAt) : null,
-      notes:       notes?.trim() || null,
+      notes:       notes?.trim()       || null,
+      meetingUrl:  meetingUrl?.trim()  || null,
       stakeholders: {
         create: Array.isArray(stakeholderIds)
           ? stakeholderIds.map((id: string) => ({ stakeholderId: id }))

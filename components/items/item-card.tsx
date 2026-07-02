@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Check, Trash2, ChevronDown, ChevronUp, Mail } from 'lucide-react'
+import Link from 'next/link'
+import { Check, Trash2, ChevronDown, ChevronUp, Mail, ExternalLink } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { PriorityBadge } from '@/components/shared/priority-badge'
@@ -140,6 +141,14 @@ export function ItemCard({ item, onRefresh, compact = false }: ItemCardProps) {
               <Trash2 className="w-3 h-3" />
               Eliminar
             </Button>
+            <Link
+              href={`/dashboard/items/${item.id}`}
+              onClick={e => e.stopPropagation()}
+              className="ml-auto flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+            >
+              <ExternalLink className="w-3 h-3" />
+              Ver detalle
+            </Link>
           </div>
         </div>
       )}

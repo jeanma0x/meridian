@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   Calendar, Plus, Users, Sparkles, ExternalLink, Trash2, ChevronDown, ChevronUp,
-  FileText, AlertTriangle, ClipboardList, MessageSquare,
+  FileText, AlertTriangle, ClipboardList, MessageSquare, Video,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -27,6 +27,7 @@ type Meeting = {
   scheduledAt:  string | null
   notes:        string | null
   prepBrief:    string | null
+  meetingUrl:   string | null
   orgId:        string
   organization: Org
   stakeholders: Array<{ stakeholder: Stakeholder }>
@@ -53,6 +54,7 @@ function MeetingForm({
   const [orgId,           setOrgId]           = useState('')
   const [scheduledAt,     setScheduledAt]     = useState('')
   const [notes,           setNotes]           = useState('')
+  const [meetingUrl,      setMeetingUrl]      = useState('')
   const [selectedStks,    setSelectedStks]    = useState<string[]>([])
   const [orgs,            setOrgs]            = useState<Org[]>([])
   const [stakeholders,    setStakeholders]    = useState<Array<Stakeholder & { orgId: string }>>([])
@@ -92,6 +94,7 @@ function MeetingForm({
         orgId,
         scheduledAt:    scheduledAt || null,
         notes:          notes || null,
+        meetingUrl:     meetingUrl.trim() || null,
         stakeholderIds: selectedStks,
       }),
     })
@@ -172,6 +175,18 @@ function MeetingForm({
             ))}
           </div>
         )}
+      </div>
+
+      {/* Meeting URL */}
+      <div className="space-y-1">
+        <label className="text-xs font-medium text-muted-foreground">Link de videollamada (opcional)</label>
+        <input
+          type="url"
+          value={meetingUrl}
+          onChange={e => setMeetingUrl(e.target.value)}
+          placeholder="https://meet.google.com/..."
+          className="w-full text-sm border border-border rounded-md px-3 py-2 bg-background text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+        />
       </div>
 
       {/* Notes */}
@@ -386,6 +401,17 @@ function MeetingCard({
           )}
 
           <div className="flex flex-wrap gap-2">
+            {meeting.meetingUrl && (
+              <a
+                href={meeting.meetingUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 h-7 px-3 rounded-md text-xs font-medium border border-border bg-background hover:bg-muted transition-colors cursor-pointer"
+              >
+                <Video className="w-3 h-3" />
+                Unirse
+              </a>
+            )}
             <Button
               size="sm"
               variant="outline"
