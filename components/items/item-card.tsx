@@ -1,12 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { Check, Trash2, ChevronDown, ChevronUp } from 'lucide-react'
+import { Check, Trash2, ChevronDown, ChevronUp, Mail } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { PriorityBadge } from '@/components/shared/priority-badge'
 import { StatusBadge } from '@/components/shared/status-badge'
 import { OrgBadge } from '@/components/shared/org-badge'
+import { EmailDraftSheet } from '@/components/artifacts/email-draft-sheet'
 import { formatDate, cn } from '@/lib/utils'
 import type { ItemWithOrg } from '@/types'
 
@@ -17,8 +18,9 @@ interface ItemCardProps {
 }
 
 export function ItemCard({ item, onRefresh, compact = false }: ItemCardProps) {
-  const [expanded, setExpanded] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [expanded,    setExpanded]    = useState(false)
+  const [loading,     setLoading]     = useState(false)
+  const [emailSheet,  setEmailSheet]  = useState(false)
 
   async function markDone(e: React.MouseEvent) {
     e.stopPropagation()
@@ -105,7 +107,7 @@ export function ItemCard({ item, onRefresh, compact = false }: ItemCardProps) {
             </div>
           )}
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             {item.status !== 'DONE' && (
               <Button
                 size="sm"
@@ -120,6 +122,16 @@ export function ItemCard({ item, onRefresh, compact = false }: ItemCardProps) {
             )}
             <Button
               size="sm"
+              variant="outline"
+              className="h-7 text-xs gap-1 cursor-pointer"
+              disabled={loading}
+              onClick={e => { e.stopPropagation(); setEmailSheet(true) }}
+            >
+              <Mail className="w-3 h-3" />
+              Redactar email
+            </Button>
+            <Button
+              size="sm"
               variant="ghost"
               className="h-7 text-xs gap-1 text-destructive hover:text-destructive"
               disabled={loading}
@@ -131,6 +143,13 @@ export function ItemCard({ item, onRefresh, compact = false }: ItemCardProps) {
           </div>
         </div>
       )}
+
+      <EmailDraftSheet
+        open={emailSheet}
+        onClose={() => setEmailSheet(false)}
+        context={`${item.title}${item.description ? ` — ${item.description}` : ''}`}
+        itemId={item.id}
+      />
     </div>
   )
 }

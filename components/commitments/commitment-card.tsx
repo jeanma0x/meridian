@@ -1,10 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { Check, Trash2, Pencil } from 'lucide-react'
+import { Check, Trash2, Pencil, Mail } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { CommitmentStatusBadge } from '@/components/shared/commitment-status-badge'
 import { OrgBadge } from '@/components/shared/org-badge'
+import { EmailDraftSheet } from '@/components/artifacts/email-draft-sheet'
 import { formatDate } from '@/lib/utils'
 import type { CommitmentWithStakeholder } from '@/types'
 
@@ -15,7 +16,8 @@ interface CommitmentCardProps {
 }
 
 export function CommitmentCard({ commitment, onEdit, onRefresh }: CommitmentCardProps) {
-  const [loading, setLoading] = useState(false)
+  const [loading,    setLoading]    = useState(false)
+  const [emailSheet, setEmailSheet] = useState(false)
 
   async function markFulfilled() {
     setLoading(true)
@@ -90,6 +92,16 @@ export function CommitmentCard({ commitment, onEdit, onRefresh }: CommitmentCard
           size="sm"
           variant="ghost"
           className="h-7 w-7 p-0 cursor-pointer"
+          title="Redactar email"
+          onClick={() => setEmailSheet(true)}
+          disabled={loading}
+        >
+          <Mail className="w-3.5 h-3.5" />
+        </Button>
+        <Button
+          size="sm"
+          variant="ghost"
+          className="h-7 w-7 p-0 cursor-pointer"
           onClick={() => onEdit(commitment)}
           disabled={loading}
         >
@@ -105,6 +117,14 @@ export function CommitmentCard({ commitment, onEdit, onRefresh }: CommitmentCard
           <Trash2 className="w-3.5 h-3.5" />
         </Button>
       </div>
+
+      <EmailDraftSheet
+        open={emailSheet}
+        onClose={() => setEmailSheet(false)}
+        context={commitment.title}
+        commitmentId={commitment.id}
+        stakeholderId={commitment.stakeholderId}
+      />
     </div>
   )
 }
