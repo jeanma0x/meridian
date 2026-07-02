@@ -33,16 +33,17 @@ const STATUS_OPTIONS = [
 interface ItemFormProps {
   item?: ItemWithOrg
   defaultOrgId?: string
+  defaultTitle?: string
   onSuccess?: (item: ItemWithOrg) => void
   onCancel?: () => void
 }
 
-export function ItemForm({ item, defaultOrgId, onSuccess, onCancel }: ItemFormProps) {
+export function ItemForm({ item, defaultOrgId, defaultTitle, onSuccess, onCancel }: ItemFormProps) {
   const [orgs, setOrgs] = useState<Org[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const [title,       setTitle]       = useState(item?.title       ?? '')
+  const [title,       setTitle]       = useState(item?.title ?? defaultTitle ?? '')
   const [description, setDescription] = useState(item?.description ?? '')
   const [orgId,       setOrgId]       = useState(item?.orgId ?? defaultOrgId ?? '')
   const [priority,    setPriority]    = useState(item?.priority ?? 'MEDIUM')

@@ -28,28 +28,35 @@ const STATUS_OPTIONS = [
   { value: 'FULFILLED', label: 'Cumplido'   },
 ]
 
+interface CommitmentDefaults {
+  title?: string
+  direction?: string
+  notes?: string
+}
+
 interface CommitmentFormProps {
   commitment?: CommitmentWithStakeholder
+  defaults?: CommitmentDefaults
   onSuccess?: (c: CommitmentWithStakeholder) => void
   onCancel?: () => void
 }
 
-export function CommitmentForm({ commitment, onSuccess, onCancel }: CommitmentFormProps) {
+export function CommitmentForm({ commitment, defaults, onSuccess, onCancel }: CommitmentFormProps) {
   const [stakeholders, setStakeholders] = useState<Stakeholder[]>([])
   const [items,        setItems]        = useState<Item[]>([])
   const [loading,      setLoading]      = useState(false)
   const [error,        setError]        = useState<string | null>(null)
 
-  const [title,           setTitle]           = useState(commitment?.title           ?? '')
+  const [title,           setTitle]           = useState(commitment?.title           ?? defaults?.title     ?? '')
   const [description,     setDescription]     = useState(commitment?.description     ?? '')
   const [stakeholderId,   setStakeholderId]   = useState(commitment?.stakeholderId   ?? '')
-  const [direction,       setDirection]       = useState(commitment?.direction       ?? 'outbound')
+  const [direction,       setDirection]       = useState(commitment?.direction ?? defaults?.direction ?? 'outbound')
   const [dueDate,         setDueDate]         = useState(
     commitment?.dueDate ? new Date(commitment.dueDate).toISOString().split('T')[0] : ''
   )
   const [status,  setStatus]  = useState(commitment?.status  ?? 'PENDING')
   const [itemId,  setItemId]  = useState(commitment?.itemId  ?? '')
-  const [notes,   setNotes]   = useState(commitment?.notes   ?? '')
+  const [notes,   setNotes]   = useState(commitment?.notes ?? defaults?.notes ?? '')
 
   useEffect(() => {
     Promise.all([
