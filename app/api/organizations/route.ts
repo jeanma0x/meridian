@@ -1,5 +1,6 @@
 import { auth } from '@clerk/nextjs/server'
 import { db } from '@/lib/db'
+import { requireUser } from '@/lib/auth'
 import { OrgSystem } from '@/lib/generated/prisma/client'
 
 function slugify(name: string): string {
@@ -16,8 +17,7 @@ export async function GET() {
   const { userId: clerkId } = await auth()
   if (!clerkId) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const user = await db.user.findUnique({ where: { clerkId } })
-  if (!user) return Response.json({ error: 'User not found' }, { status: 404 })
+  const user = await requireUser()
 
   const organizations = await db.organization.findMany({
     where: { userId: user.id },
@@ -31,8 +31,7 @@ export async function POST(req: Request) {
   const { userId: clerkId } = await auth()
   if (!clerkId) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const user = await db.user.findUnique({ where: { clerkId } })
-  if (!user) return Response.json({ error: 'User not found' }, { status: 404 })
+  const user = await requireUser()
 
   const body = await req.json()
   const { name, color, system, systemUrl } = body
@@ -42,7 +41,6 @@ export async function POST(req: Request) {
   }
 
   const slug = body.slug?.trim() || slugify(name)
-
   const validSystem = Object.values(OrgSystem).includes(system) ? system : OrgSystem.OTHER
 
   const existing = await db.organization.findUnique({
